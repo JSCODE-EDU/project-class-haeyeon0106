@@ -24,17 +24,16 @@ public class PostController {
         return ResponseEntity.ok("게시글이 작성되었습니다.");
     }
 
-//    @GetMapping("")
-//    public ResponseEntity<List<PostListResponseDto>> getPostAll(){
-//        List<PostListResponseDto> postAll = postService.getPostAll();
-//        return ResponseEntity.ok(postAll);
-//    }
-//
-//    @GetMapping("{id}/detail")
-//    public ResponseEntity<PostDetailResponseDto> getPostDetail(@PathVariable Long id){
-//        PostDetailResponseDto postDetail = postService.getPostDetail(id);
-//        return ResponseEntity.ok(postDetail);
-//    }
+    @GetMapping("")
+    public ResponseEntity<List<PostListResponseDto>> getPostAll(){
+        return ResponseEntity.ok(postService.getPostAll());
+    }
+
+    @GetMapping("{id}/detail")
+    public ResponseEntity<PostDetailResponseDto> getPostDetail(@PathVariable Long id){
+        PostDetailResponseDto postDetail = postService.getPostDetail(id);
+        return ResponseEntity.ok(postDetail);
+    }
 
     @PutMapping("{id}/update")
     public ResponseEntity updatePost(@PathVariable Long id, @RequestBody PostUpdateDto updateDto){

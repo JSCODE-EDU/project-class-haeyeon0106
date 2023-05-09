@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,18 +23,18 @@ public class PostService {
         postRepository.save(requestDto.toEntity());
     }
 
-//    @Transactional
-//    public List<PostListResponseDto> getPostAll(){
-//        return postRepository.findAll()
-//                .stream()
-//                .map(PostListResponseDto::new).collect(Collectors.toList());
-//    }
-//    @Transactional
-//    public PostDetailResponseDto getPostDetail(Long postId){
-//        Post post = postRepository.findById(postId)
-//                .orElseThrow(()->new IllegalArgumentException(""));
-//        return new PostDetailResponseDto(post);
-//    }
+    @Transactional(readOnly = true)
+    public List<PostListResponseDto> getPostAll(){
+        return postRepository.findAll()
+                .stream()
+                .map(PostListResponseDto::new).collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public PostDetailResponseDto getPostDetail(Long postId){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()->new IllegalArgumentException(""));
+        return new PostDetailResponseDto(post);
+    }
 
     @Transactional
     public void updatePost(Long postId, PostUpdateDto updateDto){
