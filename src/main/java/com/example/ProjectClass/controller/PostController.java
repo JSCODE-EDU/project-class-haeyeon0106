@@ -48,4 +48,11 @@ public class PostController {
         postService.deletePost(id);
         return ResponseEntity.ok("게시글이 삭제되었습니다.");
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<PostListResponseDto>> searchPost(String keyword
+            ,@PageableDefault(size = 100,sort = "id",direction = Sort.Direction.DESC)Pageable pageable){
+        Page<PostListResponseDto> search = postService.searchPost(keyword, pageable);
+        return ResponseEntity.ok(search);
+    }
 }

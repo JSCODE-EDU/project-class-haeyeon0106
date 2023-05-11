@@ -46,4 +46,9 @@ public class PostService {
     public void deletePost(Long postId){
         postRepository.deleteById(postId);
     }
+
+    @Transactional
+    public Page<PostListResponseDto> searchPost(String keyword, Pageable pageable){
+        return postRepository.findAllByTitleContainingDto(keyword, pageable);
+    }
 }

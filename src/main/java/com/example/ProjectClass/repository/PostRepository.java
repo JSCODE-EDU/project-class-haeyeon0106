@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PostRepository extends JpaRepository<Post,Long> {
     Page<Post> findAllByTitleContaining(String keyword, Pageable pageable);
 
+    default Page<PostListResponseDto> findAllByTitleContainingDto(String keyword,Pageable pageable){
+        return findAllByTitleContaining(keyword,pageable).map(PostListResponseDto::new);
+    }
+
     default Page<PostListResponseDto> findAllDto(Pageable pageable) {
         return findAll(pageable).map(PostListResponseDto::new);
     }
