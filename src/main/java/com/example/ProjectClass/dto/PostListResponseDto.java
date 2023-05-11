@@ -19,6 +19,6 @@ public class PostListResponseDto {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.contents = entity.getContents();
-        this.createdAt = entity.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-DD-mm"));
+        this.createdAt = entity.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 }
