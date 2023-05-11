@@ -1,16 +1,18 @@
 package com.example.ProjectClass.controller;
 
-import com.example.ProjectClass.dto.PostDetailResponseDto;
 import com.example.ProjectClass.dto.PostListResponseDto;
+import com.example.ProjectClass.dto.PostResponseDto;
 import com.example.ProjectClass.dto.PostSaveRequestDto;
 import com.example.ProjectClass.dto.PostUpdateDto;
 import com.example.ProjectClass.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/post")
@@ -25,13 +27,13 @@ public class PostController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PostListResponseDto>> getPostAll(){
-        return ResponseEntity.ok(postService.getPostAll());
+    public ResponseEntity<Page<PostListResponseDto>> getPostAll(@PageableDefault(size = 100,sort = "id",direction = Sort.Direction.DESC)Pageable pageable){
+        return ResponseEntity.ok(postService.getPostAll(pageable));
     }
 
     @GetMapping("{id}/detail")
-    public ResponseEntity<PostDetailResponseDto> getPostDetail(@PathVariable Long id){
-        PostDetailResponseDto postDetail = postService.getPostDetail(id);
+    public ResponseEntity<PostResponseDto> getPostDetail(@PathVariable Long id){
+        PostResponseDto postDetail = postService.getPostDetail(id);
         return ResponseEntity.ok(postDetail);
     }
 
@@ -45,5 +47,12 @@ public class PostController {
     public ResponseEntity<String> deletePost(@PathVariable Long id){
         postService.deletePost(id);
         return ResponseEntity.ok("게시글이 삭제되었습니다.");
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<PostListResponseDto>> searchPost(String keyword
+            ,@PageableDefault(size = 100,sort = "id",direction = Sort.Direction.DESC)Pageable pageable){
+        Page<PostListResponseDto> search = postService.searchPost(keyword, pageable);
+        return ResponseEntity.ok(search);
     }
 }

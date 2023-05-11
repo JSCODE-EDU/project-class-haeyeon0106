@@ -1,17 +1,16 @@
 package com.example.ProjectClass.service;
 
 import com.example.ProjectClass.domain.Post;
-import com.example.ProjectClass.dto.PostDetailResponseDto;
 import com.example.ProjectClass.dto.PostListResponseDto;
+import com.example.ProjectClass.dto.PostResponseDto;
 import com.example.ProjectClass.dto.PostSaveRequestDto;
 import com.example.ProjectClass.dto.PostUpdateDto;
 import com.example.ProjectClass.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,16 +23,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostListResponseDto> getPostAll(){
-        return postRepository.findAll()
-                .stream()
-                .map(PostListResponseDto::new).collect(Collectors.toList());
+    public Page<PostListResponseDto> getPostAll(Pageable pageable){
+        return postRepository.findAllDto(pageable);
+//                .stream()
+//                .map(PostListResponseDto::new).collect(Collectors.toList());
     }
     @Transactional(readOnly = true)
-    public PostDetailResponseDto getPostDetail(Long postId){
+    public PostResponseDto getPostDetail(Long postId){
         Post post = postRepository.findById(postId)
-                .orElseThrow(()->new IllegalArgumentException(""));
-        return new PostDetailResponseDto(post);
+                .orElseThrow(()->new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        return new PostResponseDto(post);
     }
 
     @Transactional
@@ -46,5 +45,10 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId){
         postRepository.deleteById(postId);
+    }
+
+    @Transactional
+    public Page<PostListResponseDto> searchPost(String keyword, Pageable pageable){
+        return postRepository.findAllByTitleContainingDto(keyword, pageable);
     }
 }

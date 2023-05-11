@@ -1,17 +1,17 @@
 package com.example.ProjectClass.domain;
 
 import com.example.ProjectClass.dto.PostUpdateDto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +20,9 @@ public class Post {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
+    @Lob
     private String contents;
 
-
-    @Builder
-    public Post (Long id,String title, String contents){
-        this.id = id;
-        this.title = title;
-        this.contents = contents;
-    }
     public void update(PostUpdateDto updateDto){
         this.title = updateDto.getTitle();
         this.contents = updateDto.getContents();
