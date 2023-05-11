@@ -8,13 +8,13 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @NoArgsConstructor
-public class PostDetailResponseDto {
+public class PostResponseDto {
     private Long id;
     private String title;
     private String contents;
     private String createdAt;
 
-    public PostDetailResponseDto(Post entity){
+    public PostResponseDto(Post entity){
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.contents = entity.getContents();
