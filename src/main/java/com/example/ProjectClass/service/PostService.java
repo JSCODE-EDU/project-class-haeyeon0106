@@ -7,6 +7,7 @@ import com.example.ProjectClass.dto.PostSaveRequestDto;
 import com.example.ProjectClass.dto.PostUpdateDto;
 import com.example.ProjectClass.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +25,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostListResponseDto> getPostAll(){
-        return postRepository.findAllDesc()
+    public List<PostListResponseDto> getPostAll(Pageable pageable){
+        return postRepository.findAll(pageable)
                 .stream()
                 .map(PostListResponseDto::new).collect(Collectors.toList());
     }

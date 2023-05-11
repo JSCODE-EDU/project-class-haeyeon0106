@@ -6,6 +6,9 @@ import com.example.ProjectClass.dto.PostSaveRequestDto;
 import com.example.ProjectClass.dto.PostUpdateDto;
 import com.example.ProjectClass.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +28,8 @@ public class PostController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<PostListResponseDto>> getPostAll(){
-        return ResponseEntity.ok(postService.getPostAll());
+    public ResponseEntity<List<PostListResponseDto>> getPostAll(@PageableDefault(size = 100,sort = "id",direction = Sort.Direction.DESC)Pageable pageable){
+        return ResponseEntity.ok(postService.getPostAll(pageable));
     }
 
     @GetMapping("{id}/detail")
