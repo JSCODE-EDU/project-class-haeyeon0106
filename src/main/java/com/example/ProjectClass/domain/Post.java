@@ -6,9 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
 @Entity
 @Table(name = "post")
 public class Post extends BaseTimeEntity{
@@ -22,6 +20,13 @@ public class Post extends BaseTimeEntity{
     @Column(nullable = false)
     @Lob
     private String contents;
+
+    @Builder
+    public Post(Long id,String title, String contents){
+        this.id = id;
+        this.title = title;
+        this.contents = contents;
+    }
 
     public void update(PostUpdateDto updateDto){
         this.title = updateDto.getTitle();
