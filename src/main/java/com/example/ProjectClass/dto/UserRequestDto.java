@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -14,7 +13,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class UserRequestDto {
     @NotBlank
-    @Email
+    @Pattern(regexp = "^[A-Za-z0-9_\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]+$", message = "잘못된 이메일 형식입니다.")
     private String email;
 
     @NotBlank
