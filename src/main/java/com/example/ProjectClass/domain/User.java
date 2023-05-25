@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,13 +26,18 @@ public class User extends BaseTimeEntity{
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Post> post;
+    private List<Post> post = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
-    public User(Long id, String email, String password){
+    public User(Long id, String email, String password, List<Post> post,List<Comment> comments){
         this.id = id;
         this.email = email;
         this.password = password;
+        this.post = post;
+        this.comments = comments;
     }
 
 }

@@ -4,6 +4,8 @@ import com.example.ProjectClass.dto.PostUpdateDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,12 +28,16 @@ public class Post extends BaseTimeEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
+
     @Builder
-    public Post(Long id,String title, String contents,User user){
+    public Post(Long id,String title, String contents,User user,List<Comment> comments){
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.user = user;
+        this.comments = comments;
     }
 
     public void update(PostUpdateDto updateDto){
