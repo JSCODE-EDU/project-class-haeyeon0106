@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -43,5 +44,13 @@ public class UserService {
         UserResponseDto responseDto = new UserResponseDto(user);
         TokenDto tokenDto = jwtProvider.generateToken(responseDto.getEmail(), responseDto.getId());
         return tokenDto;
+    }
+
+    @Transactional
+    public UserResponseDto getMypage(String token){
+        Object uid = jwtProvider.getUid(token);
+        Long castId = Long.valueOf(String.valueOf(uid));
+        User user = userRepository.findById(castId).orElseThrow(()->new IllegalStateException("해당 사용자가 존재하지 않습니다"));
+        return new UserResponseDto(user);
     }
 }

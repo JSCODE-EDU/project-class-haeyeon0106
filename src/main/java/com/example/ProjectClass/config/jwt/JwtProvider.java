@@ -110,7 +110,7 @@ public class JwtProvider {
         }
     }
 
-    public String getUid(String token){
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+    public Object getUid(String token){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("id");
     }
 }
