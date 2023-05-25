@@ -35,8 +35,9 @@ public class PostController {
             @ApiResponse(code = 401, message = "인증에 의한 오류"),
             @ApiResponse(code = 404,message = "요청 리소스를 찾을 수 없습니다")
     })
-    public ResponseEntity savePost(@Validated @RequestBody PostSaveRequestDto postSaveRequestDto){
-        postService.savePost(postSaveRequestDto);
+    public ResponseEntity savePost(@RequestHeader(value = "Authorization")String token,
+                                   @Validated @RequestBody PostSaveRequestDto postSaveRequestDto){
+        postService.savePost(token,postSaveRequestDto);
         return ResponseEntity.ok("게시글이 작성되었습니다.");
     }
 
@@ -64,16 +65,19 @@ public class PostController {
             @ApiResponse(code = 401, message = "인증에 의한 오류"),
             @ApiResponse(code = 404,message = "요청 리소스를 찾을 수 없습니다")
     })
-    public ResponseEntity updatePost(@PathVariable Long id, @RequestBody PostUpdateDto updateDto){
-        postService.updatePost(id,updateDto);
+    public ResponseEntity updatePost(@RequestHeader(value = "Authorization")String token,
+                                     @PathVariable Long id,
+                                     @RequestBody PostUpdateDto updateDto){
+        postService.updatePost(token,id,updateDto);
         return new ResponseEntity<>("게시글이 수정되었습니다.",HttpStatus.OK);
     }
 
     @ApiOperation(value = "특정 게시글 삭제하기")
     @DeleteMapping("{id}/delete")
     @ApiImplicitParam(name = "id",value = "게시글 번호")
-    public ResponseEntity<String> deletePost(@PathVariable Long id){
-        postService.deletePost(id);
+    public ResponseEntity<String> deletePost(@RequestHeader(value = "Authorization")String token,
+                                             @PathVariable Long id){
+        postService.deletePost(token,id);
         return ResponseEntity.ok("게시글이 삭제되었습니다.");
     }
 
