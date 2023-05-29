@@ -7,6 +7,7 @@ import com.example.ProjectClass.dto.PostUpdateDto;
 import com.example.ProjectClass.service.PostService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotBlank;
 
 @Api(tags = "익명 게시판 API")
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/post")
 @RestController
 public class PostController {
@@ -93,5 +95,13 @@ public class PostController {
             ,@PageableDefault(size = 100,sort = "id",direction = Sort.Direction.DESC)Pageable pageable){
         Page<PostListResponseDto> search = postService.searchPost(keyword, pageable);
         return ResponseEntity.ok(search);
+    }
+
+    @ApiOperation(value = "게시글 좋아요 추천/취소")
+    @PostMapping("/detail/{id}/likes")
+    public ResponseEntity<String> likeAndUnlikePost(@RequestHeader(value = "Authorization") String token,
+                                  @PathVariable Long id){
+        String res = postService.postLike(token, id);
+        return ResponseEntity.ok(res);
     }
 }
