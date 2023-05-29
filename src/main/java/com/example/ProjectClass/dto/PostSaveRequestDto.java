@@ -1,6 +1,7 @@
 package com.example.ProjectClass.dto;
 
 import com.example.ProjectClass.domain.Post;
+import com.example.ProjectClass.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,10 +20,13 @@ public class PostSaveRequestDto {
     @Size(min = 1, max = 1000)
     private String contents;
 
-    public Post toEntity(){
+    private User user;
+
+    public Post toEntity(User user){
         return Post.builder()
                 .title(title)
                 .contents(contents)
+                .user(user)
                 .build();
     }
 }
